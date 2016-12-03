@@ -1,0 +1,12 @@
+<?php
+
+
+function get_all_items() {
+    $items = [
+        [1, 'item1'],
+        [2, 'item2'],
+        [3, 'item3']
+    ];
+
+    return $items;
+}

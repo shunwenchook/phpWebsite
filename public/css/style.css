@@ -1,0 +1,293 @@
+header {
+    flex: 1;
+    text-align: center;
+    margin: 0px;
+
+}
+
+#header {
+    width: 80%;
+    height: 400px;
+    margin: 0px;
+}
+
+body {
+    /*background-color: black; */
+    background-image: url("/images/interstellar3.jpg");
+
+   // background: linear-gradient(to right, black ,#0d0d0d);
+    font-family: Gadugi;
+    font-size: 20px;
+    color: gray;
+}
+
+#center {
+    text-align: center;
+    align-items: center;
+}
+
+.button {
+	margin: 10px;
+    color: #0D4A4D;
+    background-color: #417D80;
+    text-decoration: none;
+    padding: 20px;
+
+}
+
+a.button:link {
+    color: #0D4A4D;
+    background-color: #417D80;
+}
+
+a.button:visited {
+    color: #0D4A4D;
+    background-color: #417D80;
+}
+
+a.button:hover {
+    background-color: #0D4A4D;
+    color: #417D80;
+}
+
+h1 {
+    display: block;
+    padding: 10px;
+    margin-bottom: 50px;
+    background: linear-gradient(#2A7F40, #4F9F64);
+    color: #003F11;
+    text-align: center;
+    align-items: center;
+    border-radius: 15px;
+}
+
+#head { 
+   position: absolute; 
+   top: 200px; 
+   left: 0; 
+   width: 400px; 
+   font-size: 50px;
+   background: rgb(0, 0, 0);
+   background: rgba(0, 0, 0, 0.7);
+   color: #4F9F64;
+   padding: 10px; 
+   text-align: center;
+   margin: 0;
+   margin-left: 40%;
+}
+
+.web_links {
+    color: #7FBF90;
+}
+
+a.web_links:visited {
+    color: #7FBF90;
+}
+
+a.web_links:hover {
+    background-color: #4F9F64;
+}
+
+.blockA {
+    border: 2px solid #9DC462;
+    padding: 5%;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    margin: 10%;
+    margin-top: 0;
+    margin-bottom: 0;
+
+    background-color: #0A1218;
+    //background-color: yellow;
+    color: #7FBF90;
+}
+
+
+
+#columnA {
+    margin-left: 10%;
+    display: inline;
+    float: left;
+    width: 22%;
+    background-color: #447884;
+     color: #0F434F;
+    padding: 20px;
+}
+
+
+
+#columnB {
+    margin-left: 4%;
+    display: inline;
+    float: left;
+    width: 22%;
+    background-color: #447884;
+     color: #0F434F;
+     padding: 20px;
+}
+
+#columnC {
+    margin-left: 4%;
+    display: inline;
+    float: left;
+    width: 22%;
+    background-color: #447884;
+     color: #0F434F;
+    padding: 20px;
+   
+}
+
+.columnA {
+    margin-left: 0;
+    display: inline;
+    float: left;
+    width: 20%;
+    //background-color: #0A1218;
+    color: gray;
+    padding: 20px;
+}
+
+.columnB {
+    margin-left: 2%;
+    display: inline;
+    float: left;
+    width: 20%;
+    //background-color: #0A1218;
+    color: gray;
+    padding: 20px;
+}
+
+.title {
+    color: #0F434F;
+    text-align: center;
+}
+
+
+.images {
+    width: 30%;
+    margin-left: 2%
+}
+
+.footerBox {
+    display: flex;
+    border: 2px solid #7FBF90;
+    margin-left: 10%;
+    width: 80%;
+    margin-top: 0;
+    background-color: #4F7514;
+}
+
+.footerBox section{
+    -webkit-flex: 1;
+    flex: 1;
+    color: #7FBF90;
+    padding: 2em;
+    align-items: center;
+}
+
+.right{ 
+    text-align: right;
+}
+
+.center {
+    text-align: center;
+}
+
+
+ul.a {
+    list-style-type: circle;
+}
+
+ul.b {
+    list-style-type: square;
+}
+
+ol.c {
+    list-style-type: upper-roman;
+}
+
+table {
+    border: 2px solid white;
+    border-collapse: collapse;
+}
+
+th {
+    border: 2px solid white;
+    border-collapse: collapse;
+    background-color: #4E9C68;
+    color: #003E15;
+    padding: 10px;
+}
+
+td {
+	border: 2px solid white;
+	padding: 10px;
+}
+
+tr.even {
+	background-color: #9AC361;
+	color: #2D4E00;
+	border: 2px solid white;
+}
+
+tr.odd {
+	background-color: #4E9C68;
+	color: #003E15;
+	border: 2px solid white;
+}
+
+#submit{
+    color: #032137;
+    background-color: #708EA4;
+    font-size: 20px;
+    margin-left: 5%;
+    width: 40%;
+}
+
+.loginSection {
+    padding: 20px;
+    width: 10%;
+    margin: 0px;
+    color: #7FBF90;
+
+    left: 88%;
+    position: absolute;
+    border: 2px solid #7FBF90;
+    background-color: #4F7514;
+}
+
+.sectionA{
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.textarea {
+    align-items: left;
+    text-align: left;
+}
+
+.imageShop {
+    width: 30%;
+    padding: 50px;
+}
+
+
+.createButton {
+    color: #032137;
+    background-color: #708EA4;
+    font-size: 35px;
+    margin-left: 13%;
+    padding-left: 30px;
+    padding-right: 30px;
+    width: 30%;
+    text-decoration: none;
+
+    margin-bottom: 3px;
+    display: block;
+    float: left;
+}
+
+.homeImage {
+    text-align: center;
+}

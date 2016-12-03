@@ -1,0 +1,105 @@
+form {
+    border: 2px solid #9DC462;
+    padding: 5%;
+    padding-top: 50px;
+    margin: 10%;
+    margin-top: 0;
+    margin-bottom: 0;
+    background-color: #0A1218;
+    //background-color: yellow;
+    color: #7FBF90;
+}
+
+fieldset {
+    border: 2px solid #7FBF90;
+    padding: 20px;
+    clear: both;
+    padding-left: 5%;
+}
+
+legend {
+    padding: 10px;
+    border: 2px solid #7FBF90;
+    background-color: #4F9F64;
+    color: #003F11;
+    margin-left: 20px;
+    font-size: 25px;
+}
+
+label {
+    width: 200px;
+    display: block;
+    float: left;
+    margin-left: 10px;
+}
+
+input {
+    margin-bottom: 3px;
+    display: block;
+    float: left;
+    margin-left: 10px;
+    }
+
+br {
+   clear: left;
+}
+
+.column1 {
+    display: block;
+    width: 40%;
+    float: left;
+}
+
+.column2 {
+    display: block;
+    width: 40%;
+    float: left;
+}
+
+.radio1 {
+    width: 150px;
+    margin-left: 0.5em;
+}
+
+.radio2 {
+    width: 150px;
+    margin-left: 0.5em;
+}
+
+.radio3 {
+    width: 100px;
+    margin-left: 0.5em;
+}
+
+.checkboxes {
+    margin-left: 0.5em;
+    width: 150px;
+}
+
+input:focus, textarea:focus{
+    background-color: #ffff33;
+}
+
+span {
+    color: red;
+    font-size: 80%;
+}
+
+#buttons {
+    display: block;
+    text-align: center;
+}
+
+#submit, #reset {
+    color: #032137;
+    background-color: #708EA4;
+    font-size: 35px;
+    margin-left: 13%;
+    padding-left: 30px;
+    padding-right: 30px;
+    width: 30%;
+}
+
+p {
+    color: gray;
+}

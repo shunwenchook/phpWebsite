@@ -1,0 +1,22 @@
+#container1 {
+	float: left;
+	width: 40%;
+	margin-left: 10%;
+}
+
+#container2 {
+	float: left;
+	width: 20%;
+	padding: 2%;
+	margin-left: 10%;
+	background-color: #0A1218;
+	color: #7FBF90;
+}
+
+#submit, #reset {
+    color: #032137;
+    background-color: #708EA4;
+    font-size: 20px;
+    margin-left: 5%;
+    width: 40%;
+}

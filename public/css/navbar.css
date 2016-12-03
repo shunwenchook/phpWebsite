@@ -1,0 +1,49 @@
+nav {
+    display: flex;
+    align-items: left;
+    justify-content: center;
+    width: 80%;
+    margin: 0;
+    margin-left: 10%;
+}
+
+.nav_bar {
+    flex: 1;
+    padding: 1rem;
+    color: #0D4A4D;
+    background-color: #417D80;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    font-family: Gadugi;
+    align-items: center;
+    justify-content: center;
+}
+
+.current {
+    flex: 1;
+    padding: 1rem;
+    color: #417D80;
+    background-color: #0D4A4D;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    font-family: Gadugi;
+}
+
+a.nav_bar:link {
+color: #0D4A4D;
+background-color: #417D80;
+}
+
+a.nav_bar:visited {
+color: #0D4A4D;
+background-color: #417D80;
+}
+
+a.nav_bar:hover {
+background-color: #0D4A4D;
+color: #417D80;
+}

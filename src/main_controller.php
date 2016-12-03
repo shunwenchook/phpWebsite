@@ -1,0 +1,788 @@
+<?php
+
+/**
+ * Contains most of the fuction
+ */
+
+/**
+ * The main controller of the website that contains functions
+ */
+
+require_once __DIR__ . '/../src/db_functions.php';
+
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'merch');
+define('DB_USER', 'root');
+define('DB_PASS', '');
+
+
+/**
+ * Creates the Index page
+ */
+function index_action() {
+    $isLoggedIn = is_logged_in_from_session();
+    $username = username_from_session();
+    $isAdmin = is_user_admin($username);
+
+    $backgroundColor = getBackgroundColor();
+    $cssStyleRule = buildStyleRule();
+
+    $pageTitle = "home page";
+
+    $indexLinkClass = "current";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass= "nav_bar";
+    $shopLinkClass = "nav_bar";
+    $crudLinkClass = "nav_bar";
+    $userLinkClass = "nav_bar";
+
+    require_once __DIR__ . '/../templates/index.php';
+}
+
+/**
+ * Creates the Gallery page
+ */
+function gallery_action() {
+
+    $backgroundColor = getBackgroundColor();
+    $cssStyleRule = buildStyleRule();
+
+
+    $pageTitle = "gallery";
+
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass= "current";
+    $shopLinkClass = "nav_bar";
+    $crudLinkClass = "nav_bar";
+    $userLinkClass = "nav_bar";
+
+
+    require_once  __DIR__ . '/../templates/gallery.php';
+
+}
+
+/**
+ * Creates the Contact Us page
+ */
+function contact_us_action() {
+    $backgroundColor = getBackgroundColor();
+    $cssStyleRule = buildStyleRule();
+
+
+    $pageTitle = "contact us";
+
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "current";
+    $galleryLinkClass= "nav_bar";
+    $shopLinkClass = "nav_bar";
+    $crudLinkClass = "nav_bar";
+    $userLinkClass = "nav_bar";
+
+    require_once __DIR__. '/../templates/contact_us.php';
+}
+
+/**
+ * Creates the shop page
+ */
+function shopAction() {
+    $backgroundColor = getBackgroundColor();
+    $cssStyleRule = buildStyleRule();
+
+    $pageTitle = "shop";
+
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass= "nav_bar";
+    $shopLinkClass = "current";
+    $crudLinkClass = "nav_bar";
+    $userLinkClass = "nav_bar";
+
+    // 1. get connection
+    $connection = connect_to_db();
+
+    // 2. get all items
+    $items = get_all_items($connection);
+
+    require_once  __DIR__ . '/../templates/shop.php';
+}
+
+/**
+ * Creates the admin CRUD page
+ */
+function adminCrud() {
+    $backgroundColor = getBackgroundColor();
+    $cssStyleRule = buildStyleRule();
+
+
+    $pageTitle = "Admin CRUD";
+
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass= "nav_bar";
+    $shopLinkClass = "nav_bar";
+    $crudLinkClass = "current";
+    $userLinkClass = "nav_bar";
+
+
+    // 1. get connection
+    $connection = connect_to_db();
+
+    // 2. get all items
+    $items = get_all_items($connection);
+
+    require_once __DIR__ .'/../templates/admincrud.php';
+}
+
+/**
+ * creates the sitemap page
+ */
+function sitemap_action() {
+    $backgroundColor = getBackgroundColor();
+    $cssStyleRule = buildStyleRule();
+
+    $pageTitle = "site map";
+
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass= "nav_bar";
+    $shopLinkClass = "nav_bar";
+    $crudLinkClass = "nav_bar";
+    $userLinkClass = "nav_bar";
+
+
+    require_once  __DIR__ . '/../templates/sitemap.php';
+}
+
+// -------------------------- Database Functions --------------------------//
+
+/**
+ * Displays the detail of one item
+ */
+function show_one_item_action()
+{
+    $backgroundColor = getBackgroundColor();
+    $cssStyleRule = buildStyleRule();
+
+    $pageTitle = "shop";
+
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass= "nav_bar";
+    $shopLinkClass = "current";
+    $crudLinkClass = "nav_bar";
+    $userLinkClass = "nav_bar";
+
+
+    $connection = connect_to_db();
+
+    $itemID = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+    $item = get_one_item($connection, $itemID);
+
+    if(null == $item){
+        $message = 'sorry, no product with id = ' . $itemID . ' could be retrieved from the database';
+
+        // output the detail of product in HTML table
+        require_once __DIR__ . '/../templates/message.php';
+    } else {
+        // output the detail of product in HTML table
+        require_once __DIR__ . '/../templates/detail.php';
+    }
+}
+
+/**
+ * Deletes one item from the item database
+ */
+function delete_item_action()
+{
+    $backgroundColor = getBackgroundColor();
+    $cssStyleRule = buildStyleRule();
+
+    $pageTitle = "shop";
+
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass= "nav_bar";
+    $shopLinkClass = "current";
+    $crudLinkClass = "nav_bar";
+    $userLinkClass = "nav_bar";
+
+
+    $connection = connect_to_db();
+
+    $itemID = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+    $success = delete_item($connection, $itemID);
+
+    if($success){
+        $message = 'SUCCESS - product with id = ' . $itemID . ' was deleted';
+    } else {
+        $message = 'sorry, product with id = ' . $itemID . ' could not be deleted';
+    }
+
+    require_once __DIR__ . '/../templates/message.php';
+}
+
+/**
+ * Shows the new item form
+ */
+function show_new_item_form_action()
+{
+    $backgroundColor = getBackgroundColor();
+    $cssStyleRule = buildStyleRule();
+
+    $pageTitle = "Create new Item";
+
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass= "nav_bar";
+    $shopLinkClass = "current";
+    $crudLinkClass = "nav_bar";
+    $userLinkClass = "nav_bar";
+
+
+    require_once __DIR__ . '/../templates/new_item_form.php';
+}
+
+/**
+ * Takes in input from the new item form and creates the item on the database
+ */
+function create_item_action()
+{
+    $backgroundColor = getBackgroundColor();
+    $cssStyleRule = buildStyleRule();
+
+    $pageTitle = "shop";
+
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass= "nav_bar";
+    $shopLinkClass = "current";
+    $crudLinkClass = "nav_bar";
+    $userLinkClass = "nav_bar";
+
+
+    $connection = connect_to_db();
+
+    $itemName = filter_input(INPUT_POST, 'itemName', FILTER_SANITIZE_STRING);
+    $imageSrc = filter_input(INPUT_POST, 'imageSrc', FILTER_SANITIZE_STRING);
+    $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_NUMBER_FLOAT);
+    $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+    $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_NUMBER_INT);
+
+    $success = create_product($connection, $itemName, $imageSrc, $price, $description, $category);
+
+    if($success){
+        $itemID = $connection->lastInsertId();
+        $message = "SUCCESS - new product with ID = $itemID created";
+    } else {
+        $message = 'sorry, there was a problem creating new product';
+    }
+
+    require_once __DIR__ . '/../templates/message.php';
+}
+
+/**
+ * Shows the update item form and passes the item details to it
+ */
+function show_update_item_form_action()
+{
+    $backgroundColor = getBackgroundColor();
+    $cssStyleRule = buildStyleRule();
+
+    $pageTitle = "shop";
+
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass= "nav_bar";
+    $shopLinkClass = "current";
+    $crudLinkClass = "nav_bar";
+    $userLinkClass = "nav_bar";
+
+
+    $connection = connect_to_db();
+
+    $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+    $item = get_one_item($connection, $id);
+
+    require_once __DIR__ . '/../templates/update_item_form.php';
+}
+
+/**
+ * updates the item on the database based on the inputs
+ */
+function update_item_action()
+{
+    $backgroundColor = getBackgroundColor();
+    $cssStyleRule = buildStyleRule();
+
+    $pageTitle = "shop";
+
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass= "nav_bar";
+    $shopLinkClass = "current";
+    $crudLinkClass = "nav_bar";
+    $userLinkClass = "nav_bar";
+
+
+    $connection = connect_to_db();
+
+    $itemID = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+    $itemName = filter_input(INPUT_POST, 'itemName', FILTER_SANITIZE_STRING);
+    $imageSrc = filter_input(INPUT_POST, 'imageSrc', FILTER_SANITIZE_STRING);
+    $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_NUMBER_FLOAT);
+    $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+    $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_NUMBER_INT);
+
+    $success = update_item($connection, $itemID, $itemName, $imageSrc, $price, $description, $category);
+
+    if($success){
+        $message = "SUCCESS - new product with ID = $itemID updated";
+    } else {
+        $message = 'sorry, there was a problem updated the product';
+    }
+
+    require_once __DIR__ . '/../templates/message.php';
+}
+
+
+/**
+ * shows the new user form
+ */
+function show_new_user_form(){
+    $backgroundColor = getBackgroundColor();
+    $cssStyleRule = buildStyleRule();
+
+    $pageTitle = "Login Form";
+
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass= "nav_bar";
+    $shopLinkClass = "nav_bar";
+    $crudLinkClass = "nav_bar";
+    $userLinkClass = "nav_bar";
+
+    require_once __DIR__. '/../templates/new_user_form.php';
+}
+
+/**
+ * creates the user for input based on the user's input
+ */
+function create_user_action(){
+    $backgroundColor = getBackgroundColor();
+    $cssStyleRule = buildStyleRule();
+
+    $pageTitle = "";
+
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass= "nav_bar";
+    $shopLinkClass = "nav_bar";
+    $crudLinkClass = "nav_bar";
+    $userLinkClass = "nav_bar";
+
+
+    $connection = connect_to_db();
+
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
+    $pass = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+    $pictureSrc = filter_input(INPUT_POST, 'imageSrc', FILTER_SANITIZE_STRING);
+
+    $hashedPassword = password_hash($pass, PASSWORD_DEFAULT);
+
+    $success = create_user($connection, $email, $hashedPassword, $pictureSrc);
+
+    if($success){
+        $itemID = $connection->lastInsertId();
+        $message = "SUCCESS - new product with ID = $itemID created";
+    } else {
+        $message = 'sorry, there was a problem creating new product';
+    }
+
+    require_once __DIR__ . '/../templates/message.php';
+}
+
+/**
+ * Shows user settings available to the user
+ */
+function show_user_settings() {
+    $backgroundColor = getBackgroundColor();
+    $cssStyleRule = buildStyleRule();
+
+    $pageTitle = "User settings";
+
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass= "nav_bar";
+    $shopLinkClass = "nav_bar";
+    $crudLinkClass = "nav_bar";
+    $userLinkClass = "current";
+
+    $username = username_from_session();
+
+
+    $userImage = get_one_user_by_image($username);
+
+    require_once __DIR__ . '/../templates/userSettings.php';
+}
+
+
+/**
+ * Updates the database with a new picture
+ */
+function change_picture(){
+    $backgroundColor = getBackgroundColor();
+    $cssStyleRule = buildStyleRule();
+
+
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass= "nav_bar";
+    $shopLinkClass = "nav_bar";
+    $crudLinkClass = "nav_bar";
+    $userLinkClass = "current";
+
+    $connection = connect_to_db();
+
+    $username = username_from_session();
+
+    $pictureSrc = filter_input(INPUT_POST, 'imageSrc', FILTER_SANITIZE_STRING);
+
+    $success = set_picture($connection, $username, $pictureSrc);
+
+    if($success){
+        $message = "SUCCESS - you have updated your picture";
+    } else {
+        $message = 'Sorry, there was a problem updating your picture';
+    }
+
+    require_once __DIR__ . '/../templates/message.php';
+}
+
+
+// -------------------------- Sessions Functions --------------------------//
+/**
+ * shows the login form
+ */
+function login_action()
+{
+    $backgroundColor = getBackgroundColor();
+    $cssStyleRule = buildStyleRule();
+
+
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass= "nav_bar";
+    $shopLinkClass = "nav_bar";
+    $crudLinkClass = "nav_bar";
+    require_once __DIR__ . '/../templates/loginForm.php';
+}
+
+/**
+ * Logs out the user and terminates the sessions
+ */
+function logout_action()
+{
+    $backgroundColor = getBackgroundColor();
+    $cssStyleRule = buildStyleRule();
+
+
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass= "nav_bar";
+    $shopLinkClass = "nav_bar";
+    $crudLinkClass = "nav_bar";
+
+    // remove 'user' element from SESSION array
+    unset($_SESSION['user']);
+
+    kill_session();
+
+    // redirect to index action
+    index_action();
+}
+
+/**
+ * takes in input from the login form and checks with the database
+ */
+function process_login_action()
+{
+    $backgroundColor = getBackgroundColor();
+    $cssStyleRule = buildStyleRule();
+
+
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass = "nav_bar";
+    $shopLinkClass = "nav_bar";
+    $crudLinkClass = "nav_bar";
+    $userLinkClass = "nav_bar";
+
+
+    // default is bad login
+    $isLoggedIn = false;
+
+    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+
+    $connection = connect_to_db();
+
+    if (authenticate($username, $password)) {
+        $isLoggedIn = true;
+        $isAdmin = is_user_admin($username);
+
+        // STORE login status SESSION
+        $_SESSION['user'] = $username;
+
+        $userImage = get_one_user_by_image( $_SESSION['user']);
+
+        require_once __DIR__ . '/../templates/loginSuccess.php';
+    } else {
+        $message = 'Bad username or password, please try again ';
+        require_once __DIR__ . '/../templates/message.php';
+    }
+
+}
+
+/**
+ * Gets the current background colour and returns it
+ * @return string
+ */
+function getBackgroundColor()
+{
+    // default to WHITE if not found in $_SESSION
+    if (isset($_SESSION['backgroundColor'])){
+        return $_SESSION['backgroundColor'];
+    } else {
+        return '##0A1218';
+    }
+}
+
+/**
+ * changes the colour based user preference
+ * @param $color
+ */
+function changeBackgroundColor($color)
+{
+    $_SESSION['backgroundColor'] = $color;
+    show_user_settings();
+}
+
+/**
+ * Changes font size based on user preference
+ * @param $size
+ */
+function changeSize($size)
+{
+    // (1) set default style array
+    $styleArray = getStyleArray();
+
+    // (2) change color element to parameter
+    $styleArray['size'] = $size;
+
+    // store new style array into SESSION
+    $_SESSION['styleArray'] = $styleArray;
+
+    // redirect display page (with CSS style rule)
+    show_user_settings();
+}
+
+/**
+ * Builds the CSS code for the website
+ * @return string
+ */
+function buildStyleRule()
+{
+    // (1) get style array
+    $styleArray = getStyleArray();
+
+    // (3) retrieve color and size from array
+    $color = $styleArray['color'];
+    $size = $styleArray['size'];
+
+    // (4) build string to define CSS rule for all body text color
+    $bodyRule = '.changeCSS {'
+        . PHP_EOL . "    font-size: {$size}rem;"
+        . PHP_EOL . '}';
+
+    return $bodyRule;
+}
+
+/**
+ * gets the style array and returns it
+ * @return array
+ */
+function getStyleArray()
+{
+    // (1) set default style array
+    $styleArray = array();
+    $styleArray['color'] = 'black';
+    $styleArray['size'] = '1.4';
+
+    // (2) try to retrieve style array from $_SESSION
+    if (isset($_SESSION['styleArray'])){
+        $styleArray = $_SESSION['styleArray'];
+    }
+
+    return $styleArray;
+}
+
+
+//--------- helper functions -------
+
+
+/**
+ * Checks if there's a user logged in
+ * @return bool
+ */
+function is_logged_in_from_session()
+{
+
+    $isLoggedIn = false;
+
+    // user is logged in if there is a 'user' entry in the SESSION superglobal
+    if(isset($_SESSION['user'])){
+        $isLoggedIn = true;
+    }
+
+    return $isLoggedIn;
+}
+
+/**
+ * Gets the username from the sessions
+ * @return string
+ */
+function username_from_session()
+{
+    $username = '';
+
+    // extract username from SESSION superglobal
+    if (isset($_SESSION['user'])) {
+        $username = $_SESSION['user'];
+    }
+
+    return $username;
+}
+
+/**
+ * Kills and forgets the session
+ */
+function kill_session()
+{
+    $_SESSION = [];
+
+    if (ini_get('session.use_cookies')){
+        $params = session_get_cookie_params();
+        setcookie(	session_name(),
+            '', time() - 42000,
+            $params['path'], $params['domain'],
+            $params['secure'], $params['httponly']
+        );
+    }
+    session_destroy();
+}
+
+// ------------------- Shopping Cart Functions ----------------------------- //
+
+/**
+ * Shows the shopping cart
+ */
+function show_cart(){
+    $backgroundColor = getBackgroundColor();
+    $cssStyleRule = buildStyleRule();
+
+    $shoppingCart = getShoppingCart();
+
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass= "nav_bar";
+    $shopLinkClass = "nav_bar";
+    $crudLinkClass = "nav_bar";
+    $userLinkClass = "current";
+
+
+    require_once __DIR__ . '/../templates/shoppingCart.php';
+}
+
+/**
+ * Adds items to the shopping cart
+ */
+function addToCart()
+{
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass= "nav_bar";
+    $shopLinkClass = "nav_bar";
+    $crudLinkClass = "nav_bar";
+    $userLinkClass = "nav_bar";
+
+    // get the ID of product to add to cart
+    $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+
+    // get the cart array
+    $shoppingCart = getShoppingCart();
+
+    // default is old total is zero
+    $oldTotal = 0;
+
+    // if quantity found in cart array, then use this
+    if(isset($shoppingCart[$id])){
+        $oldTotal = $shoppingCart[$id];
+    }
+
+    // store old total + 1 as new quantity into cart array
+    $shoppingCart[$id] = $oldTotal + 1;
+
+    // store new  array into SESSION
+    $_SESSION['shoppingCart'] = $shoppingCart;
+
+    $message = "You have successfully added the item to the cart. 
+                Click to the top right Icon to see your shopping cart. 
+                <br>
+                <a href=\"index.php?action=shop\" > Click here to go back to shop  </a> ";
+
+    // redirect display page
+    require_once __DIR__ . '/../templates/message.php';
+}
+
+/**
+ * Removes item from the shopping cart
+ */
+function removeFromCart()
+{
+    $indexLinkClass = "nav_bar";
+    $contactLinkClass = "nav_bar";
+    $galleryLinkClass= "nav_bar";
+    $shopLinkClass = "nav_bar";
+    $crudLinkClass = "nav_bar";
+    $userLinkClass = "nav_bar";
+
+    // get the ID of product to add to cart
+    $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+
+
+    // get the cart array
+    $shoppingCart = getShoppingCart();
+
+    // remove entry for this ID
+    unset($shoppingCart[$id]);
+
+    // store new  array into SESSION
+    $_SESSION['shoppingCart'] = $shoppingCart;
+
+    // redirect display page
+    require_once __DIR__ . '/../templates/shoppingCart.php';
+}
+
+/**
+ * Gets the shopping cart
+ * @return array
+ */
+function getShoppingCart()
+{
+    if (isset($_SESSION['shoppingCart'])){
+        return $_SESSION['shoppingCart'];
+    } else {
+        return [];
+    }
+}
